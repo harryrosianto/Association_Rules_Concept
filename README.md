@@ -1,66 +1,81 @@
-### Definition of Association Rules
+Berikut adalah soal yang serupa, tetapi berbeda dari soal asli untuk ujian praktik pemrograman:
 
-**Association rules** are a key concept in data mining, particularly in Market Basket Analysis, which aims to discover interesting relationships or patterns between items in large datasets of transactions. These rules help identify correlations between products or events that frequently co-occur.
+---
 
-An **association rule** is typically written in the form:
+**Skema Sertifikasi (KKNI/Okupasi/Klaster)**
 
-\[
-X \rightarrow Y
-\]
+**Judul**: *Pengelola Inventori & Transaksi Ritel*
 
-Where:
-- **X** (the antecedent) is the set of items on the left-hand side of the rule.
-- **Y** (the consequent) is the set of items on the right-hand side of the rule.
+**Nomor**: 
 
-The interpretation of this rule is: *"If X is purchased (or occurs), then Y is likely to be purchased (or occur)."*
+**TUK**: Sewaktu/Tempat Kerja/Mandiri*
 
-### Key Metrics in Association Rules
+**Nama Asesor**: 
 
-1. **Support**:
-   - Measures how frequently an itemset (both X and Y together) appears in the dataset. It tells us how popular a rule is.
-   - Mathematically:
-   \[
-   \text{Support}(X \rightarrow Y) = \frac{\text{Transactions containing both X and Y}}{\text{Total transactions}}
-   \]
-   - Example: If bread and milk appear together in 30% of transactions, the support for `{bread} → {milk}` is 0.30.
+**Nama Asesi**: 
 
-2. **Confidence**:
-   - Measures the likelihood of the consequent (Y) given the antecedent (X). In other words, if X is purchased, how often is Y also purchased?
-   - Mathematically:
-   \[
-   \text{Confidence}(X \rightarrow Y) = \frac{\text{Transactions containing both X and Y}}{\text{Transactions containing X}}
-   \]
-   - Example: If in 75% of transactions where bread is bought, milk is also bought, the confidence for `{bread} → {milk}` is 0.75.
+**Tanggal**: 
 
-3. **Lift**:
-   - Measures how much more likely Y is to be purchased when X is purchased, compared to when Y is purchased independently. It shows the strength of the association.
-   - Mathematically:
-   \[
-   \text{Lift}(X \rightarrow Y) = \frac{\text{Confidence}(X \rightarrow Y)}{\text{Support}(Y)}
-   \]
-   - Example: If the lift for `{bread} → {milk}` is 1.2, it means that buying bread makes purchasing milk 1.2 times more likely than it would be by chance.
+---
 
-### Why Association Rules Matter
+### **Instruksi**
 
-Association rules help in identifying patterns like:
-- **Cross-selling** opportunities: e.g., customers who buy bread are also likely to buy milk.
-- **Recommendation systems**: suggesting additional products to customers based on their previous purchases.
-- **Inventory management**: understanding which items are frequently bought together helps optimize stock levels.
+1. Baca dan pelajari setiap instruksi di bawah ini dengan cermat sebelum mulai mengerjakan.
+2. Ajukan klarifikasi kepada asesor kompetensi jika ada hal yang belum jelas.
+3. Lakukan pekerjaan sesuai urutan proses yang telah ditentukan.
+4. Seluruh proses kerja harus mengikuti SOP/WI yang berlaku (jika ada).
 
-### Example Rule
+---
 
-Consider a grocery store scenario with the following rule:
+### **Skenario Tugas Praktik Demonstrasi**
 
-\[
-\{bread\} \rightarrow \{butter\}
-\]
+Sebuah toko bahan makanan bernama *"Sembako Sejahtera"* menjual beberapa jenis produk dengan data stok sebagai berikut:
 
-This means "if a customer buys bread, they are likely to also buy butter." Using support, confidence, and lift, we can quantify the strength of this relationship.
+| No | Produk               | Berat | Harga Beli | Harga Jual | Stok |
+|----|-----------------------|-------|------------|------------|------|
+| 1  | Minyak Goreng Sari   | 1 L   | Rp. 20.000 | Rp. 23.000 | 150  |
+| 2  | Gula Manis Indah     | 1 kg  | Rp. 13.000 | Rp. 15.000 | 200  |
+| 3  | Beras Wangi Setia    | 5 kg  | Rp. 60.000 | Rp. 68.000 | 75   |
+| 4  | Tepung Terigu Lestari | 1 kg  | Rp. 8.000  | Rp. 9.500  | 120  |
+| 5  | Garam Beryodium      | 500 g | Rp. 3.000  | Rp. 3.500  | 300  |
 
-### Applications of Association Rules
+### Persyaratan Toko:
+- Pelanggan dapat membeli lebih dari satu produk dalam setiap transaksi.
+- Sistem mencatat transaksi secara sederhana, hanya berdasarkan nama pembeli.
+- Setiap transaksi akan mengurangi stok barang, dan jika stok tidak mencukupi, transaksi dibatalkan.
+- Setiap transaksi dikenakan pajak sebesar 10%.
 
-- **Retail and E-commerce**: To find product pairs that are commonly purchased together.
-- **Healthcare**: Identifying patterns in patient symptoms and treatments.
-- **Web Usage Mining**: Discovering patterns in how users navigate websites.
+### Transaksi Rutin dan Tidak Rutin:
+| No | Tanggal           | Nama Pelanggan    | Produk            | Berat | Jumlah | Keterangan         |
+|----|--------------------|-------------------|--------------------|-------|--------|--------------------|
+| 1  | Setiap awal bulan | Warung Laris      | Beras Wangi Setia | 5 kg  | 5      | Rutin              |
+| 2  | Setiap minggu     | Ibu Murni         | Minyak Goreng Sari | 1 L   | 10     | Rutin              |
+| 3  | 1 Februari 2026   | Pak Budi          | Gula Manis Indah   | 1 kg  | 15     | Tidak Rutin       |
+| 4  | 15 Februari 2026  | Ibu Rina          | Tepung Terigu Lestari | 1 kg | 20    | Tidak Rutin       |
+| 5  | 20 Februari 2026  | Bapak Ari         | Garam Beryodium    | 500 g | 50     | Tidak Rutin       |
 
-In conclusion, association rules provide valuable insights into customer behavior and item relationships, helping businesses make informed decisions on product placement, recommendations, and promotions.
+### **Tugas:**
+
+1. **Perancangan Sistem**
+   - Rancang basis data dan perangkat lunak yang sesuai untuk toko *Sembako Sejahtera*, termasuk pemilihan mesin basis data dan bahasa pemrograman.
+   - Buat dokumentasi singkat yang menjelaskan rencana basis data dan pemrograman yang akan digunakan.
+   - Tentukan fungsi/prosedur/trigger/perpustakaan yang diperlukan.
+
+2. **Implementasi Sistem**
+   - Implementasikan basis data untuk menyimpan data stok dan transaksi toko.
+   - Buat trigger dan prosedur yang dapat mengatur stok produk secara otomatis.
+   - Buat aplikasi untuk:
+     - Mencatat transaksi pembelian oleh pelanggan dan menolak transaksi jika stok tidak mencukupi.
+     - Menampilkan ringkasan transaksi lengkap beserta tanggal, nama pelanggan, produk, harga, pajak, dan total harga.
+     - Menghitung keuntungan toko selama bulan Februari 2026 berdasarkan data transaksi.
+     - Menampilkan total pajak yang harus disetor selama bulan Februari 2026.
+   - Gunakan komentar untuk menjelaskan fungsi kode program.
+   - Terapkan penanganan kesalahan untuk menghindari bug, dan gunakan paradigma pemrograman yang sesuai (berorientasi objek/prosedural).
+
+3. **Pengujian**
+   - Lakukan debugging untuk memastikan tidak ada kesalahan.
+   - Buat dokumentasi singkat mengenai program yang telah dibuat.
+
+---
+
+**Durasi Waktu:** 180 menit
