@@ -1,23 +1,3 @@
-Berikut adalah soal yang serupa, tetapi berbeda dari soal asli untuk ujian praktik pemrograman:
-
----
-
-**Skema Sertifikasi (KKNI/Okupasi/Klaster)**
-
-**Judul**: *Pengelola Inventori & Transaksi Ritel*
-
-**Nomor**: 
-
-**TUK**: Sewaktu/Tempat Kerja/Mandiri*
-
-**Nama Asesor**: 
-
-**Nama Asesi**: 
-
-**Tanggal**: 
-
----
-
 ### **Instruksi**
 
 1. Baca dan pelajari setiap instruksi di bawah ini dengan cermat sebelum mulai mengerjakan.
