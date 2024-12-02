@@ -1,61 +1,112 @@
-### **Instruksi**
+### Studi Kasus: Implementasi Bagging Menggunakan Association Rules di R dengan Apriori
 
-1. Baca dan pelajari setiap instruksi di bawah ini dengan cermat sebelum mulai mengerjakan.
-2. Ajukan klarifikasi kepada asesor kompetensi jika ada hal yang belum jelas.
-3. Lakukan pekerjaan sesuai urutan proses yang telah ditentukan.
-4. Seluruh proses kerja harus mengikuti SOP/WI yang berlaku (jika ada).
+#### Latar Belakang
+Sebuah supermarket ingin meningkatkan strategi pemasaran mereka dengan menganalisis pola pembelian pelanggan. Untuk meningkatkan akurasi analisis, kita menggunakan metode *bagging* (Bootstrap Aggregating) untuk memperkuat *association rules* yang dihasilkan oleh algoritma Apriori.
 
----
-
-### **Skenario Tugas Praktik Demonstrasi**
-
-Sebuah toko bahan makanan bernama *"Sembako Sejahtera"* menjual beberapa jenis produk dengan data stok sebagai berikut:
-
-| No | Produk               | Berat | Harga Beli | Harga Jual | Stok |
-|----|-----------------------|-------|------------|------------|------|
-| 1  | Minyak Goreng Sari   | 1 L   | Rp. 20.000 | Rp. 23.000 | 150  |
-| 2  | Gula Manis Indah     | 1 kg  | Rp. 13.000 | Rp. 15.000 | 200  |
-| 3  | Beras Wangi Setia    | 5 kg  | Rp. 60.000 | Rp. 68.000 | 75   |
-| 4  | Tepung Terigu Lestari | 1 kg  | Rp. 8.000  | Rp. 9.500  | 120  |
-| 5  | Garam Beryodium      | 500 g | Rp. 3.000  | Rp. 3.500  | 300  |
-
-### Persyaratan Toko:
-- Pelanggan dapat membeli lebih dari satu produk dalam setiap transaksi.
-- Sistem mencatat transaksi secara sederhana, hanya berdasarkan nama pembeli.
-- Setiap transaksi akan mengurangi stok barang, dan jika stok tidak mencukupi, transaksi dibatalkan.
-- Setiap transaksi dikenakan pajak sebesar 10%.
-
-### Transaksi Rutin dan Tidak Rutin:
-| No | Tanggal           | Nama Pelanggan    | Produk            | Berat | Jumlah | Keterangan         |
-|----|--------------------|-------------------|--------------------|-------|--------|--------------------|
-| 1  | Setiap awal bulan | Warung Laris      | Beras Wangi Setia | 5 kg  | 5      | Rutin              |
-| 2  | Setiap minggu     | Ibu Murni         | Minyak Goreng Sari | 1 L   | 10     | Rutin              |
-| 3  | 1 Februari 2026   | Pak Budi          | Gula Manis Indah   | 1 kg  | 15     | Tidak Rutin       |
-| 4  | 15 Februari 2026  | Ibu Rina          | Tepung Terigu Lestari | 1 kg | 20    | Tidak Rutin       |
-| 5  | 20 Februari 2026  | Bapak Ari         | Garam Beryodium    | 500 g | 50     | Tidak Rutin       |
-
-### **Tugas:**
-
-1. **Perancangan Sistem**
-   - Rancang basis data dan perangkat lunak yang sesuai untuk toko *Sembako Sejahtera*, termasuk pemilihan mesin basis data dan bahasa pemrograman.
-   - Buat dokumentasi singkat yang menjelaskan rencana basis data dan pemrograman yang akan digunakan.
-   - Tentukan fungsi/prosedur/trigger/perpustakaan yang diperlukan.
-
-2. **Implementasi Sistem**
-   - Implementasikan basis data untuk menyimpan data stok dan transaksi toko.
-   - Buat trigger dan prosedur yang dapat mengatur stok produk secara otomatis.
-   - Buat aplikasi untuk:
-     - Mencatat transaksi pembelian oleh pelanggan dan menolak transaksi jika stok tidak mencukupi.
-     - Menampilkan ringkasan transaksi lengkap beserta tanggal, nama pelanggan, produk, harga, pajak, dan total harga.
-     - Menghitung keuntungan toko selama bulan Februari 2026 berdasarkan data transaksi.
-     - Menampilkan total pajak yang harus disetor selama bulan Februari 2026.
-   - Gunakan komentar untuk menjelaskan fungsi kode program.
-   - Terapkan penanganan kesalahan untuk menghindari bug, dan gunakan paradigma pemrograman yang sesuai (berorientasi objek/prosedural).
-
-3. **Pengujian**
-   - Lakukan debugging untuk memastikan tidak ada kesalahan.
-   - Buat dokumentasi singkat mengenai program yang telah dibuat.
+**Tujuan**:
+1. Menganalisis pola pembelian menggunakan Apriori.
+2. Meningkatkan stabilitas dan akurasi model dengan *bagging*.
 
 ---
 
-**Durasi Waktu:** 180 menit
+#### Dataset
+Kita menggunakan dataset transaksi sederhana yang merepresentasikan pembelian beberapa barang:
+
+```plaintext
+Transaksi  Barang
+1          [Roti, Susu, Keju]
+2          [Roti, Susu]
+3          [Keju, Telur]
+4          [Roti, Telur, Susu]
+5          [Telur, Susu, Keju]
+```
+
+---
+
+#### Langkah Implementasi
+
+1. **Persiapan Dataset dan Instalasi Library**
+
+```R
+# Instalasi library
+install.packages("arules")
+install.packages("caret")
+
+# Memuat library
+library(arules)
+library(caret)
+```
+
+2. **Membuat Dataset Transaksi**
+
+```R
+# Dataset transaksi
+data_list <- list(
+  c("Roti", "Susu", "Keju"),
+  c("Roti", "Susu"),
+  c("Keju", "Telur"),
+  c("Roti", "Telur", "Susu"),
+  c("Telur", "Susu", "Keju")
+)
+
+# Konversi ke format transaksi
+transactions <- as(data_list, "transactions")
+summary(transactions)
+```
+
+3. **Menerapkan Apriori**
+
+```R
+# Menjalankan algoritma Apriori
+rules <- apriori(
+  transactions, 
+  parameter = list(supp = 0.4, conf = 0.6, minlen = 2)
+)
+
+# Melihat hasil
+inspect(rules)
+```
+
+4. **Menerapkan Bagging**
+
+Bagging akan dilakukan dengan membangkitkan beberapa subset bootstrap dari dataset asli dan menjalankan algoritma Apriori pada masing-masing subset.
+
+```R
+set.seed(123)
+
+# Fungsi untuk menghasilkan aturan dari subset bootstrap
+generate_rules <- function(data) {
+  sample_data <- sample(data, size = length(data), replace = TRUE)
+  sample_transactions <- as(sample_data, "transactions")
+  apriori(sample_transactions, parameter = list(supp = 0.3, conf = 0.5, minlen = 2))
+}
+
+# Iterasi bagging
+n_iter <- 10
+bagged_rules <- lapply(1:n_iter, function(x) generate_rules(transactions))
+
+# Gabungkan semua aturan
+all_rules <- do.call(c, bagged_rules)
+
+# Menghilangkan aturan duplikat
+unique_rules <- unique(all_rules)
+
+# Inspeksi aturan hasil bagging
+inspect(unique_rules)
+```
+
+5. **Evaluasi**
+
+Evaluasi dilakukan dengan membandingkan hasil aturan dari Apriori tunggal dan *bagged rules*.
+
+```R
+# Evaluasi performa
+summary(rules)
+summary(unique_rules)
+
+# Perbandingan jumlah aturan
+cat("Jumlah aturan dari Apriori tunggal: ", length(rules), "\n")
+cat("Jumlah aturan setelah Bagging: ", length(unique_rules), "\n")
+```
+
+---
